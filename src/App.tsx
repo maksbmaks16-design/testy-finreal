@@ -235,7 +235,7 @@ const Services = () => {
               className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all border border-gray-100 group"
             >
               <div className="bg-primary/5 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
-                {React.cloneElement(service.icon as React.ReactElement, { className: "group-hover:text-white transition-colors" })}
+                {React.cloneElement(service.icon as React.ReactElement<any>, { className: "group-hover:text-white transition-colors" })}
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">{service.title}</h3>
               <p className="text-gray-600 mb-6 leading-relaxed">
