@@ -277,7 +277,7 @@ const WhyUs = () => {
           <div className="lg:w-1/2 relative">
             <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="relative z-10">
               <img 
-                src="/assets/images/consulting.avif" 
+                src="/assets/images/konsulting.avif" 
                 alt="Finreal Team" 
                 width="800"
                 height="600"
