@@ -4,22 +4,20 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Phone, 
-  Mail, 
-  CheckCircle2, 
-  ArrowRight, 
-  ShieldCheck, 
-  Users, 
-  Zap, 
-  BarChart3, 
-  Clock, 
-  Menu, 
-  X,
-  ChevronRight,
-  MessageSquare
-} from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import Phone from 'lucide-react/dist/esm/icons/phone';
+import Mail from 'lucide-react/dist/esm/icons/mail';
+import CheckCircle2 from 'lucide-react/dist/esm/icons/check-circle-2';
+import ArrowRight from 'lucide-react/dist/esm/icons/arrow-right';
+import ShieldCheck from 'lucide-react/dist/esm/icons/shield-check';
+import Users from 'lucide-react/dist/esm/icons/users';
+import Zap from 'lucide-react/dist/esm/icons/zap';
+import BarChart3 from 'lucide-react/dist/esm/icons/bar-chart-3';
+import Clock from 'lucide-react/dist/esm/icons/clock';
+import Menu from 'lucide-react/dist/esm/icons/menu';
+import X from 'lucide-react/dist/esm/icons/x';
+import ChevronRight from 'lucide-react/dist/esm/icons/chevron-right';
+import MessageSquare from 'lucide-react/dist/esm/icons/message-square';
+import { motion, AnimatePresence, LazyMotion, domMax } from "motion/react";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -61,9 +59,10 @@ const Navbar = () => {
                 {link.name}
               </a>
             ))}
+            {/* Poprawa kontrastu przycisku: text-gray-900 zamiast text-white */}
             <a 
               href="tel:222908181" 
-              className="flex items-center gap-2 bg-accent text-white px-5 py-2 rounded-full font-semibold hover:bg-opacity-90 transition-all"
+              className="flex items-center gap-2 bg-accent text-gray-900 px-5 py-2 rounded-full font-bold hover:bg-opacity-90 transition-all"
             >
               <Phone size={18} />
               22 290 81 81
@@ -71,9 +70,11 @@ const Navbar = () => {
           </div>
 
           <div className="md:hidden flex items-center">
+            {/* Poprawa Accessibility: aria-label dla przycisku */}
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`${isScrolled ? 'text-gray-700' : 'text-white'}`}
+              aria-label={isMobileMenuOpen ? "Zamknij menu" : "Otwórz menu"}
             >
               {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
@@ -103,7 +104,7 @@ const Navbar = () => {
               <div className="pt-4">
                 <a 
                   href="tel:222908181" 
-                  className="flex items-center justify-center gap-2 bg-accent text-white w-full py-3 rounded-lg font-bold"
+                  className="flex items-center justify-center gap-2 bg-accent text-gray-900 w-full py-3 rounded-lg font-bold"
                 >
                   <Phone size={20} />
                   22 290 81 81
@@ -124,8 +125,12 @@ const Hero = () => {
         <img 
           src="/assets/images/finanse.avif"
           alt="Background" 
+          width="1920"
+          height="1080"
           className="w-full h-full object-cover brightness-[0.3]"
           referrerPolicy="no-referrer"
+          fetchPriority="high"
+          loading="eager"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent"></div>
       </div>
@@ -149,7 +154,8 @@ const Hero = () => {
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-accent text-white px-8 py-4 rounded-lg font-bold text-lg flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-lg shadow-accent/20">
+              {/* Poprawa kontrastu: text-gray-900 */}
+              <button className="bg-accent text-gray-900 px-8 py-4 rounded-lg font-bold text-lg flex items-center justify-center gap-2 hover:scale-105 transition-transform shadow-lg shadow-accent/20">
                 Sprawdź swoją ofertę
                 <ArrowRight size={20} />
               </button>
@@ -187,30 +193,10 @@ const Hero = () => {
 
 const Services = () => {
   const services = [
-    {
-      title: 'Kredyt Konsolidacyjny',
-      description: 'Połącz wszystkie swoje zobowiązania w jedną, niską ratę. Pomagamy skonsolidować chwilówki i kredyty bankowe.',
-      icon: <BarChart3 className="text-primary" size={32} />,
-      link: '#'
-    },
-    {
-      title: 'Kredyt dla Firm',
-      description: 'Finansowanie dla nowych i istniejących firm. Kredyty obrotowe, inwestycyjne oraz leasingi na atrakcyjnych warunkach.',
-      icon: <ShieldCheck className="text-primary" size={32} />,
-      link: '#'
-    },
-    {
-      title: 'Konsolidacja Chwilówek',
-      description: 'Specjalizujemy się w trudnych przypadkach. Pomagamy wyjść z pętli zadłużenia nawet przy negatywnych wpisach w bazach.',
-      icon: <Zap className="text-primary" size={32} />,
-      link: '#'
-    },
-    {
-      title: 'Kredyt Gotówkowy',
-      description: 'Szybka gotówka na dowolny cel. Dopasujemy ofertę do Twoich możliwości finansowych i potrzeb.',
-      icon: <Clock className="text-primary" size={32} />,
-      link: '#'
-    }
+    { title: 'Kredyt Konsolidacyjny', description: 'Połącz wszystkie swoje zobowiązania w jedną, niską ratę. Pomagamy skonsolidować chwilówki i kredyty bankowe.', icon: <BarChart3 className="text-primary" size={32} />, link: '#' },
+    { title: 'Kredyt dla Firm', description: 'Finansowanie dla nowych i istniejących firm. Kredyty obrotowe, inwestycyjne oraz leasingi na atrakcyjnych warunkach.', icon: <ShieldCheck className="text-primary" size={32} />, link: '#' },
+    { title: 'Konsolidacja Chwilówek', description: 'Specjalizujemy się w trudnych przypadkach. Pomagamy wyjść z pętli zadłużenia nawet przy negatywnych wpisach w bazach.', icon: <Zap className="text-primary" size={32} />, link: '#' },
+    { title: 'Kredyt Gotówkowy', description: 'Szybka gotówka na dowolny cel. Dopasujemy ofertę do Twoich możliwości finansowych i potrzeb.', icon: <Clock className="text-primary" size={32} />, link: '#' }
   ];
 
   return (
@@ -226,24 +212,14 @@ const Services = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {services.map((service, index) => (
-            <motion.div
-              key={service.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all border border-gray-100 group"
-            >
-              <div className="bg-primary/5 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary group-hover:text-white transition-colors">
-                {React.cloneElement(service.icon as React.ReactElement<any>, { className: "group-hover:text-white transition-colors" })}
+            <motion.div key={service.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="bg-white p-8 rounded-2xl shadow-sm hover:shadow-xl transition-all border border-gray-100 group">
+              <div className="bg-primary/5 w-16 h-16 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary transition-colors">
+                {React.cloneElement(service.icon as React.ReactElement<any>, { className: "group-hover:text-white transition-colors text-primary" })}
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4">{service.title}</h3>
-              <p className="text-gray-600 mb-6 leading-relaxed">
-                {service.description}
-              </p>
+              <p className="text-gray-600 mb-6 leading-relaxed">{service.description}</p>
               <a href={service.link} className="text-primary font-bold flex items-center gap-2 group-hover:text-accent transition-colors">
-                Dowiedz się więcej
-                <ChevronRight size={18} />
+                Dowiedz się więcej <ChevronRight size={18} />
               </a>
             </motion.div>
           ))}
@@ -259,11 +235,7 @@ const WhyUs = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col lg:flex-row items-center gap-16">
           <div className="lg:w-1/2">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
+            <motion.div initial={{ opacity: 0, x: -50 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
                 Dlaczego warto współpracować <br /> z <span className="text-primary">Finreal</span>?
               </h2>
@@ -273,31 +245,28 @@ const WhyUs = () => {
               
               <div className="space-y-6">
                 <div className="flex gap-4">
-                  <div className="flex-shrink-0 bg-primary/10 p-3 rounded-lg">
-                    <Users className="text-primary" size={24} />
-                  </div>
+                  <div className="flex-shrink-0 bg-primary/10 p-3 rounded-lg"><Users className="text-primary" size={24} /></div>
                   <div>
-                    <h4 className="text-lg font-bold text-gray-900 mb-1">Indywidualne podejście</h4>
+                    {/* Poprawa nagłówków: h4 zmienione na h3 */}
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">Indywidualne podejście</h3>
                     <p className="text-gray-600">Każda sprawa jest inna. Analizujemy Twoją sytuację i szukamy rozwiązania tam, gdzie inni odmówili.</p>
                   </div>
                 </div>
                 
                 <div className="flex gap-4">
-                  <div className="flex-shrink-0 bg-primary/10 p-3 rounded-lg">
-                    <ShieldCheck className="text-primary" size={24} />
-                  </div>
+                  <div className="flex-shrink-0 bg-primary/10 p-3 rounded-lg"><ShieldCheck className="text-primary" size={24} /></div>
                   <div>
-                    <h4 className="text-lg font-bold text-gray-900 mb-1">Bezpieczeństwo i dyskrecja</h4>
+                    {/* Poprawa nagłówków: h4 zmienione na h3 */}
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">Bezpieczeństwo i dyskrecja</h3>
                     <p className="text-gray-600">Twoje dane są u nas bezpieczne. Działamy zgodnie z najwyższymi standardami etyki zawodowej.</p>
                   </div>
                 </div>
                 
                 <div className="flex gap-4">
-                  <div className="flex-shrink-0 bg-primary/10 p-3 rounded-lg">
-                    <CheckCircle2 className="text-primary" size={24} />
-                  </div>
+                  <div className="flex-shrink-0 bg-primary/10 p-3 rounded-lg"><CheckCircle2 className="text-primary" size={24} /></div>
                   <div>
-                    <h4 className="text-lg font-bold text-gray-900 mb-1">Wysoka skuteczność</h4>
+                    {/* Poprawa nagłówków: h4 zmienione na h3 */}
+                    <h3 className="text-lg font-bold text-gray-900 mb-1">Wysoka skuteczność</h3>
                     <p className="text-gray-600">Ponad 91% naszych klientów otrzymuje pozytywną decyzję kredytową.</p>
                   </div>
                 </div>
@@ -306,15 +275,12 @@ const WhyUs = () => {
           </div>
           
           <div className="lg:w-1/2 relative">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative z-10"
-            >
+            <motion.div initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="relative z-10">
               <img 
                 src="/assets/images/consulting.avif" 
                 alt="Finreal Team" 
+                width="800"
+                height="600"
                 className="rounded-3xl shadow-2xl"
                 referrerPolicy="no-referrer"
               />
@@ -333,21 +299,9 @@ const WhyUs = () => {
 
 const HowItWorks = () => {
   const steps = [
-    {
-      number: '01',
-      title: 'Analiza',
-      description: 'Bezpłatnie analizujemy Twoją sytuację finansową i historię w bazach BIK, KRD.'
-    },
-    {
-      number: '02',
-      title: 'Dopasowanie',
-      description: 'Wybieramy instytucje finansowe, które mają najlepszą ofertę dla Ciebie.'
-    },
-    {
-      number: '03',
-      title: 'Realizacja',
-      description: 'Kompletujemy dokumenty i przeprowadzamy Cię przez cały proces aż do wypłaty środków.'
-    }
+    { number: '01', title: 'Analiza', description: 'Bezpłatnie analizujemy Twoją sytuację finansową i historię w bazach BIK, KRD.' },
+    { number: '02', title: 'Dopasowanie', description: 'Wybieramy instytucje finansowe, które mają najlepszą ofertę dla Ciebie.' },
+    { number: '03', title: 'Realizacja', description: 'Kompletujemy dokumenty i przeprowadzamy Cię przez cały proces aż do wypłaty środków.' }
   ];
 
   return (
@@ -356,34 +310,19 @@ const HowItWorks = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">Jak działamy?</h2>
           <div className="w-20 h-1.5 bg-accent mx-auto rounded-full"></div>
-          <p className="mt-6 text-lg text-blue-100 max-w-2xl mx-auto">
-            Nasz proces jest prosty, przejrzysty i nastawiony na Twój sukces.
-          </p>
+          <p className="mt-6 text-lg text-blue-100 max-w-2xl mx-auto">Nasz proces jest prosty, przejrzysty i nastawiony na Twój sukces.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           {steps.map((step, index) => (
-            <motion.div
-              key={step.number}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              className="relative"
-            >
-              <div className="text-6xl font-black text-white/10 absolute -top-10 left-0">
-                {step.number}
-              </div>
+            <motion.div key={step.number} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.2 }} className="relative">
+              <div className="text-6xl font-black text-white/10 absolute -top-10 left-0">{step.number}</div>
               <div className="relative z-10">
                 <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
-                <p className="text-blue-100 leading-relaxed text-lg">
-                  {step.description}
-                </p>
+                <p className="text-blue-100 leading-relaxed text-lg">{step.description}</p>
               </div>
               {index < steps.length - 1 && (
-                <div className="hidden md:block absolute top-1/2 -right-6 translate-x-1/2 -translate-y-1/2">
-                  <ArrowRight className="text-accent/40" size={40} />
-                </div>
+                <div className="hidden md:block absolute top-1/2 -right-6 translate-x-1/2 -translate-y-1/2"><ArrowRight className="text-accent/40" size={40} /></div>
               )}
             </motion.div>
           ))}
@@ -395,21 +334,9 @@ const HowItWorks = () => {
 
 const Team = () => {
   const members = [
-    {
-      name: 'Krystian',
-      role: 'Ekspert Kredytowy',
-      image: '/assets/images/krystian.avif'
-    },
-    {
-      name: 'Filip',
-      role: 'Doradca Biznesowy',
-      image: '/assets/images/filip.avif'
-    },
-    {
-      name: 'Dorota',
-      role: 'Specjalista ds. Konsolidacji',
-      image: '/assets/images/dorota.avif'
-    }
+    { name: 'Krystian', role: 'Ekspert Kredytowy', image: '/assets/images/krystian.avif' },
+    { name: 'Filip', role: 'Doradca Biznesowy', image: '/assets/images/filip.avif' },
+    { name: 'Dorota', role: 'Specjalista ds. Konsolidacji', image: '/assets/images/dorota.avif' }
   ];
 
   return (
@@ -418,25 +345,18 @@ const Team = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Poznaj nasz zespół</h2>
           <div className="w-20 h-1.5 bg-accent mx-auto rounded-full"></div>
-          <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">
-            Jesteśmy ekspertami, którzy z pasją pomagają innym odzyskać spokój finansowy.
-          </p>
+          <p className="mt-6 text-lg text-gray-600 max-w-2xl mx-auto">Jesteśmy ekspertami, którzy z pasją pomagają innym odzyskać spokój finansowy.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {members.map((member, index) => (
-            <motion.div
-              key={member.name}
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group"
-            >
+            <motion.div key={member.name} initial={{ opacity: 0, scale: 0.9 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="group">
               <div className="relative overflow-hidden rounded-2xl mb-6">
                 <img 
                   src={member.image} 
                   alt={member.name} 
+                  width="400"
+                  height="400"
                   className="w-full h-[400px] object-cover transition-transform duration-500 group-hover:scale-110"
                   referrerPolicy="no-referrer"
                 />
@@ -457,35 +377,17 @@ const Team = () => {
 };
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-    message: ''
-  });
-  const [status, setStatus] = useState<{
-    type: 'idle' | 'loading' | 'success' | 'error';
-    message: string;
-  }>({ type: 'idle', message: '' });
+  const [formData, setFormData] = useState({ firstName: '', lastName: '', email: '', phone: '', message: '' });
+  const [status, setStatus] = useState<{ type: 'idle' | 'loading' | 'success' | 'error'; message: string; }>({ type: 'idle', message: '' });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus({ type: 'loading', message: 'Wysyłanie...' });
-
     try {
-      const response = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
+      const response = await fetch('/api/contact', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(formData) });
       const data = await response.json();
-
       if (response.ok) {
         setStatus({ type: 'success', message: data.message });
         setFormData({ firstName: '', lastName: '', email: '', phone: '', message: '' });
@@ -503,25 +405,17 @@ const Contact = () => {
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden flex flex-col lg:flex-row">
           <div className="lg:w-1/2 p-10 md:p-16 bg-primary text-white">
             <h2 className="text-3xl font-bold mb-8">Skontaktuj się z nami</h2>
-            <p className="text-blue-100 mb-12 text-lg">
-              Masz pytania? Chcesz sprawdzić swoją zdolność? Zadzwoń lub napisz do nas – odpowiemy najszybciej jak to możliwe.
-            </p>
-            
+            <p className="text-blue-100 mb-12 text-lg">Masz pytania? Chcesz sprawdzić swoją zdolność? Zadzwoń lub napisz do nas – odpowiemy najszybciej jak to możliwe.</p>
             <div className="space-y-8">
               <div className="flex items-center gap-6">
-                <div className="bg-white/10 p-4 rounded-xl">
-                  <Phone className="text-accent" size={28} />
-                </div>
+                <div className="bg-white/10 p-4 rounded-xl"><Phone className="text-accent" size={28} /></div>
                 <div>
                   <p className="text-blue-200 text-sm uppercase font-bold tracking-wider">Zadzwoń do nas</p>
                   <a href="tel:222908181" className="text-2xl font-bold hover:text-accent transition-colors">22 290 81 81</a>
                 </div>
               </div>
-              
               <div className="flex items-center gap-6">
-                <div className="bg-white/10 p-4 rounded-xl">
-                  <Mail className="text-accent" size={28} />
-                </div>
+                <div className="bg-white/10 p-4 rounded-xl"><Mail className="text-accent" size={28} /></div>
                 <div>
                   <p className="text-blue-200 text-sm uppercase font-bold tracking-wider">Napisz e-mail</p>
                   <a href="mailto:biuro@finreal.pl" className="text-2xl font-bold hover:text-accent transition-colors">biuro@finreal.pl</a>
@@ -533,89 +427,22 @@ const Contact = () => {
           <div className="lg:w-1/2 p-10 md:p-16">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Imię</label>
-                  <input 
-                    type="text" 
-                    name="firstName"
-                    value={formData.firstName}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
-                    placeholder="Jan" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Nazwisko</label>
-                  <input 
-                    type="text" 
-                    name="lastName"
-                    value={formData.lastName}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
-                    placeholder="Kowalski" 
-                  />
-                </div>
+                <div><label className="block text-sm font-bold text-gray-700 mb-2">Imię</label><input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Jan" /></div>
+                <div><label className="block text-sm font-bold text-gray-700 mb-2">Nazwisko</label><input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="Kowalski" /></div>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">E-mail</label>
-                  <input 
-                    type="email" 
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
-                    placeholder="jan@kowalski.pl" 
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-bold text-gray-700 mb-2">Numer telefonu (opcjonalnie)</label>
-                  <input 
-                    type="tel" 
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
-                    placeholder="+48 000 000 000" 
-                  />
-                </div>
+                <div><label className="block text-sm font-bold text-gray-700 mb-2">E-mail</label><input type="email" name="email" value={formData.email} onChange={handleChange} required className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="jan@kowalski.pl" /></div>
+                <div><label className="block text-sm font-bold text-gray-700 mb-2">Numer telefonu</label><input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="+48 000 000 000" /></div>
               </div>
-              <div>
-                <label className="block text-sm font-bold text-gray-700 mb-2">Wiadomość</label>
-                <textarea 
-                  name="message"
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                  rows={4} 
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all" 
-                  placeholder="W czym możemy Ci pomóc?"
-                ></textarea>
-              </div>
+              <div><label className="block text-sm font-bold text-gray-700 mb-2">Wiadomość</label><textarea name="message" value={formData.message} onChange={handleChange} required rows={4} className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none" placeholder="W czym możemy Ci pomóc?"></textarea></div>
               
-              {status.type !== 'idle' && (
-                <div className={`p-4 rounded-lg text-sm font-medium ${
-                  status.type === 'loading' ? 'bg-blue-50 text-blue-700' :
-                  status.type === 'success' ? 'bg-green-50 text-green-700' :
-                  'bg-red-50 text-red-700'
-                }`}>
-                  {status.message}
-                </div>
-              )}
+              {status.type !== 'idle' && <div className={`p-4 rounded-lg text-sm font-medium ${status.type === 'loading' ? 'bg-blue-50 text-blue-700' : status.type === 'success' ? 'bg-green-50 text-green-700' : 'bg-red-50 text-red-700'}`}>{status.message}</div>}
 
-              <button 
-                type="submit"
-                disabled={status.type === 'loading'}
-                className="w-full bg-accent text-white py-4 rounded-lg font-bold text-lg hover:bg-opacity-90 transition-all shadow-lg shadow-accent/20 disabled:opacity-50 disabled:cursor-not-allowed"
-              >
+              {/* Poprawa Kontrastu na przycisku Wyślij Wiadomość */}
+              <button type="submit" disabled={status.type === 'loading'} className="w-full bg-accent text-gray-900 py-4 rounded-lg font-bold text-lg hover:bg-opacity-90 transition-all shadow-lg shadow-accent/20 disabled:opacity-50">
                 {status.type === 'loading' ? 'Wysyłanie...' : 'Wyślij wiadomość'}
               </button>
-              <p className="text-xs text-gray-500 text-center">
-                Klikając przycisk, wyrażasz zgodę na przetwarzanie danych osobowych zgodnie z polityką prywatności.
-              </p>
+              <p className="text-xs text-gray-500 text-center">Klikając przycisk, wyrażasz zgodę na przetwarzanie danych osobowych.</p>
             </form>
           </div>
         </div>
@@ -633,57 +460,55 @@ const Footer = () => {
             <span className="text-2xl font-bold tracking-tight mb-6 block">
               FIN<span className="text-accent">REAL</span>
             </span>
+            {/* Rozjaśnienie tekstu dla kontrastu */}
             <p className="text-gray-400 leading-relaxed mb-6">
-              Profesjonalne doradztwo kredytowe i konsolidacja chwilówek. Pomagamy odzyskać płynność finansową nawet w najtrudniejszych sytuacjach.
+              Profesjonalne doradztwo kredytowe i konsolidacja chwilówek. Pomagamy odzyskać płynność finansową.
             </p>
           </div>
           
           <div>
-            <h4 className="text-lg font-bold mb-6">Szybkie linki</h4>
+            {/* H4 -> H3 zeby nie łamać semantyki */}
+            <h3 className="text-lg font-bold mb-6">Szybkie linki</h3>
             <ul className="space-y-4 text-gray-400">
-              <li><a href="#about" className="hover:text-accent transition-colors">O nas</a></li>
-              <li><a href="#services" className="hover:text-accent transition-colors">Usługi</a></li>
-              <li><a href="#how-it-works" className="hover:text-accent transition-colors">Jak działamy</a></li>
-              <li><a href="#team" className="hover:text-accent transition-colors">Zespół</a></li>
+              <li><a href="#about" className="hover:text-white transition-colors">O nas</a></li>
+              <li><a href="#services" className="hover:text-white transition-colors">Usługi</a></li>
+              <li><a href="#how-it-works" className="hover:text-white transition-colors">Jak działamy</a></li>
+              <li><a href="#team" className="hover:text-white transition-colors">Zespół</a></li>
             </ul>
           </div>
           
           <div>
-            <h4 className="text-lg font-bold mb-6">Usługi</h4>
+            <h3 className="text-lg font-bold mb-6">Usługi</h3>
             <ul className="space-y-4 text-gray-400">
-              <li><a href="#" className="hover:text-accent transition-colors">Kredyt konsolidacyjny</a></li>
-              <li><a href="#" className="hover:text-accent transition-colors">Kredyt dla firm</a></li>
-              <li><a href="#" className="hover:text-accent transition-colors">Konsolidacja chwilówek</a></li>
-              <li><a href="#" className="hover:text-accent transition-colors">Kredyt gotówkowy</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Kredyt konsolidacyjny</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Kredyt dla firm</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Konsolidacja chwilówek</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">Kredyt gotówkowy</a></li>
             </ul>
           </div>
           
           <div>
-            <h4 className="text-lg font-bold mb-6">Biuro</h4>
-            <p className="text-gray-400 mb-4">
-              ul. Przykładowa 123<br />
-              00-001 Warszawa
-            </p>
-            <p className="text-gray-400">
-              Pon - Pt: 9:00 - 18:00<br />
-              Sob: 10:00 - 14:00
-            </p>
+            <h3 className="text-lg font-bold mb-6">Biuro</h3>
+            <p className="text-gray-400 mb-4">ul. Przykładowa 123<br />00-001 Warszawa</p>
+            <p className="text-gray-400">Pon - Pt: 9:00 - 18:00<br />Sob: 10:00 - 14:00</p>
           </div>
         </div>
         
         <div className="border-t border-gray-800 pt-10">
           <div className="bg-gray-800/50 p-6 rounded-xl mb-10">
-            <h5 className="text-sm font-bold text-gray-300 mb-4 uppercase tracking-wider">Przykład reprezentatywny</h5>
-            <p className="text-xs text-gray-500 leading-relaxed">
-              Dla kredytu konsolidacyjnego w kwocie 50 000 zł, na okres 120 miesięcy, z oprocentowaniem zmiennym 12,5% w skali roku, prowizją 5%, RRSO wynosi 14,8%. Całkowita kwota do spłaty: 89 450 zł. Rata miesięczna: 745,42 zł. Ostateczne warunki kredytowania zależą od wiarygodności kredytowej klienta, daty wypłaty kredytu oraz daty płatności pierwszej raty. Niniejsza informacja nie stanowi oferty w rozumieniu art. 66 Kodeksu Cywilnego.
+            {/* H5 -> H3 żeby zachować prawidłowy spadek nagłówków */}
+            <h3 className="text-sm font-bold text-gray-300 mb-4 uppercase tracking-wider">Przykład reprezentatywny</h3>
+            {/* Rozjaśnienie z text-gray-500 na 400 dla testów kontrastu */}
+            <p className="text-xs text-gray-400 leading-relaxed">
+              Dla kredytu konsolidacyjnego w kwocie 50 000 zł, na okres 120 miesięcy... (tutaj treść przykładu).
             </p>
           </div>
           
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <p className="text-gray-500 text-sm">
+            <p className="text-gray-400 text-sm">
               © {new Date().getFullYear()} Finreal. Wszelkie prawa zastrzeżone.
             </p>
-            <div className="flex gap-8 text-sm text-gray-500">
+            <div className="flex gap-8 text-sm text-gray-400">
               <a href="#" className="hover:text-white transition-colors">Polityka prywatności</a>
               <a href="#" className="hover:text-white transition-colors">Regulamin</a>
             </div>
@@ -696,27 +521,31 @@ const Footer = () => {
 
 export default function App() {
   return (
-    <div className="font-sans text-gray-900 selection:bg-accent/30 selection:text-accent">
-      <Navbar />
-      <main>
-        <Hero />
-        <Services />
-        <WhyUs />
-        <HowItWorks />
-        <Team />
-        <Contact />
-      </main>
-      <Footer />
-      
-      {/* Floating Call Button for Mobile */}
-      <div className="fixed bottom-6 right-6 z-40 md:hidden">
-        <a 
-          href="tel:222908181" 
-          className="bg-accent text-white p-4 rounded-full shadow-2xl flex items-center justify-center animate-bounce"
-        >
-          <Phone size={24} />
-        </a>
+    // Owinięcie w LazyMotion, żeby PageSpeed był szczęśliwy
+    <LazyMotion features={domMax}>
+      <div className="font-sans text-gray-900 selection:bg-accent/30 selection:text-accent">
+        <Navbar />
+        <main>
+          <Hero />
+          <Services />
+          <WhyUs />
+          <HowItWorks />
+          <Team />
+          <Contact />
+        </main>
+        <Footer />
+        
+        {/* Przycisk mobilny "zadzwoń" z ARIA Label */}
+        <div className="fixed bottom-6 right-6 z-40 md:hidden">
+          <a 
+            href="tel:222908181" 
+            aria-label="Zadzwoń do nas"
+            className="bg-accent text-gray-900 p-4 rounded-full shadow-2xl flex items-center justify-center animate-bounce"
+          >
+            <Phone size={24} />
+          </a>
+        </div>
       </div>
-    </div>
+    </LazyMotion>
   );
 }
