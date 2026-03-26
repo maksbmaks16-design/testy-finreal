@@ -122,7 +122,7 @@ const Hero = () => {
     <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       <div className="absolute inset-0 z-0">
         <img 
-          src="./assets/images/finanse.avif"
+          src="/assets/images/finanse.avif"
           alt="Background" 
           className="w-full h-full object-cover brightness-[0.3]"
           referrerPolicy="no-referrer"
@@ -313,7 +313,7 @@ const WhyUs = () => {
               className="relative z-10"
             >
               <img 
-                src="./assets/images/consulting.avif" 
+                src="/assets/images/consulting.avif" 
                 alt="Finreal Team" 
                 className="rounded-3xl shadow-2xl"
                 referrerPolicy="no-referrer"
@@ -398,17 +398,17 @@ const Team = () => {
     {
       name: 'Krystian',
       role: 'Ekspert Kredytowy',
-      image: './assets/images/krystian.avif'
+      image: '/assets/images/krystian.avif'
     },
     {
       name: 'Filip',
       role: 'Doradca Biznesowy',
-      image: './assets/images/filip.avif'
+      image: '/assets/images/filip.avif'
     },
     {
       name: 'Dorota',
       role: 'Specjalista ds. Konsolidacji',
-      image: './assets/images/dorota.avif'
+      image: '/assets/images/dorota.avif'
     }
   ];
 
